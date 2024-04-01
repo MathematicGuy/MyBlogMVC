@@ -31,7 +31,7 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    // controler = 'AdminTags' (AdminTagsController) and action = 'List' (List method in AdminTagsController)
+    pattern: "{controller=AdminTags}/{action=List}/{id?}");
 
 app.Run();
-// Get more coffee when go down for study

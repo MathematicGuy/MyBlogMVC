@@ -7,4 +7,6 @@ namespace MyBlog.Web.Models.ViewModels
         public string Name { get; set; }
         public string DisplayName { get; set; }
     }
+
+
 }
