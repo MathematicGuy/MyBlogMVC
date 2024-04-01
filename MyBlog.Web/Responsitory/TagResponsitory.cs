@@ -20,17 +20,16 @@ namespace MyBlog.Web.Responsitory
         public async Task<Tag> AddAsync(Tag tag)
         {
             // Want to talk to the Db
-                await bloggieDbContext.Tags.AddAsync(tag);
-                await bloggieDbContext.SaveChangesAsync();
+            await bloggieDbContext.Tags.AddAsync(tag);
+            await bloggieDbContext.SaveChangesAsync();
 
             return tag;
         }
 
-        // return all Records from Db
+        // return all Tags Records from Db
         public async Task<IEnumerable<Tag>> GetAllAsync()
         {
             return await bloggieDbContext.Tags.ToListAsync();
-            
         }
 
         public async Task<Tag> GetByIdAsync(Guid id)

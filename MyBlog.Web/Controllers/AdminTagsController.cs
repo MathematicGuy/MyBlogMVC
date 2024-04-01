@@ -132,7 +132,6 @@ namespace MyBlog.Web.Controllers
 
             }
             return RedirectToAction("List", new { id = editTagRequest.Id });
-
         }
 
         [HttpPost]
