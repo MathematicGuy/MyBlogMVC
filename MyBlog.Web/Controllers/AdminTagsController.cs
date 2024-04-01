@@ -4,19 +4,17 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using MyBlog.Web.Data;
 using MyBlog.Web.Models.Domain;
 using MyBlog.Web.Models.ViewModels;
+using MyBlog.Web.Responsitory;
 
 namespace MyBlog.Web.Controllers
 {
     public class AdminTagsController : Controller
     {
-        // read from bloggieDbContext
-        private readonly BloggieDbContext bloggieDbContext;
+        private readonly ITagResponsitory tagResponsitory;
 
-        // explain: constructor injection (dependency injection) - inject BloggieDbContext into AdminTagsController
-        public AdminTagsController(BloggieDbContext bloggieDbContext)
+        public AdminTagsController(ITagResponsitory tagResponsitory)
         {
-            // assign bloggieDbContext to this.bloggieDbContext
-            this.bloggieDbContext = bloggieDbContext;
+            this.tagResponsitory = tagResponsitory;
         }
 
         // GET: /AdminTags/Add
@@ -42,8 +40,7 @@ namespace MyBlog.Web.Controllers
 
             // use await to make it complete async
             // do all these function async
-            await bloggieDbContext.Tags.AddAsync(tag);
-            await bloggieDbContext.SaveChangesAsync();
+            await tagResponsitory.AddAsync(tag);
 
             return View("Add");
         }
@@ -51,19 +48,18 @@ namespace MyBlog.Web.Controllers
         [HttpPost]
         //[ActionName("SubmitTag")] // if they're not the same Cs still recognized which Add to use (context: compare Add above and Add below)
 
-        public IActionResult SubmitTag(AddTagRequest submitTagRequest)
+        public async Task<IActionResult> SubmitTag(AddTagRequest submitTagRequest)
         {
             // Mapping AddTagRequest to Tag to domain model
-            var tagg = new Tag
+            var tag = new Tag
             {
                 Name = submitTagRequest.Name,
                 DisplayName = submitTagRequest.DisplayName,
             };
 
-            // get data from tagg
-            bloggieDbContext.Tags.Add(tagg);
-            // save changes
-            bloggieDbContext.SaveChanges();
+            // inject the respotory from TagResponsitory
+            await tagResponsitory.AddAsync(tag);
+
 
             return RedirectToAction("List");
         }
@@ -76,7 +72,7 @@ namespace MyBlog.Web.Controllers
         public async Task<IActionResult> List()
         {
             // get data from bloggieDbContext
-            var tags = await bloggieDbContext.Tags.ToListAsync();
+            var tags = await tagResponsitory.GetAllAsync();
 
             // return data to view
             return View(tags);
@@ -91,7 +87,7 @@ namespace MyBlog.Web.Controllers
             
             // 2nd  method
             // Use FirstOrDefault to Find tag by id and return the 1st one it found
-            var tag = await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);  
+            var tag = await tagResponsitory.GetByIdAsync(id);  
 
             // Return EditTagRequest Model to the view if tag is not null
             if (tag != null)
@@ -100,7 +96,7 @@ namespace MyBlog.Web.Controllers
                 {
                     Id = tag.Id,
                     Name = tag.Name,
-                    DisplayName = tag.DisplayName
+                    DisplayName = tag.DisplayName,
                 };
 
                 return View(editTagRequest);
@@ -124,25 +120,19 @@ namespace MyBlog.Web.Controllers
             };
 
             // existingTag object - get existing tag from bloggieDbContext (Data from Database) 
-            var existingTag = await bloggieDbContext.Tags.FindAsync(tag.Id);
+            var updatedTag = await tagResponsitory.UpdateAsync(tag);
             
-            // replace existing tag with new tag datas
-            if (existingTag != null)
+            if (updatedTag != null)
             {
-                existingTag.Name = tag.Name;
-                existingTag.DisplayName = tag.DisplayName;
-
-                // save changes
-               await bloggieDbContext.SaveChangesAsync();
-
-                // show success notification
-                TempData["SuccessMessage"] = "Tag updated successfully!";
-
-                return RedirectToAction("List", new { id = editTagRequest.Id });
+                // Show success notification
             }
+            else
+            {
+                // show fail notification
 
-            // show fail notification
+            }
             return RedirectToAction("List", new { id = editTagRequest.Id });
+
         }
 
         [HttpPost]
@@ -151,22 +141,17 @@ namespace MyBlog.Web.Controllers
         {
             // get tag by id
             // use find for existing tag id
-            var tag = await bloggieDbContext.Tags.FindAsync(editTagRequest.Id);
-
-            // remove tag from bloggieDbContext
-            if (tag != null)
+            var deletedTag = await tagResponsitory.DeleteAsync(editTagRequest.Id);
+            if (deletedTag != null)
             {
-                bloggieDbContext.Tags.Remove(tag);
-                await bloggieDbContext.SaveChangesAsync();
-
-                // show success notification
-                TempData["SuccessMessage"] = "Tag deleted successfully!";
-                return RedirectToAction("List");
+                // Show success notification
             }
-
-            // show fail notification
-            TempData["ErrorMessage"] = "Failed to delete tag. Please try again."; 
-            return RedirectToAction("Edit", new {id = editTagRequest.id});
+            else
+            {
+                // show fail notification
+                TempData["ErrorMessage"] = "Failed to delete tag. Please try again.";
+            }
+            return RedirectToAction("List", new { id = editTagRequest.Id });
         }
     }
 }

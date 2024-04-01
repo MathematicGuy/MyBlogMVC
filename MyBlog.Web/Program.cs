@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Web.Data;
+using MyBlog.Web.Responsitory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,11 @@ builder.Services.AddControllersWithViews(); // allow to use Contorller with View
 builder.Services.AddDbContext<BloggieDbContext>(options =>
     // paste connection string name inside GetConnectionString()
     options.UseSqlServer(builder.Configuration.GetConnectionString("BloggieDbConnectionString")));
+
+
+// Inject ITagInterface & TagResponsitory
+builder.Services.AddScoped<ITagResponsitory, TagResponsitory>();
+
 
 var app = builder.Build();
 
