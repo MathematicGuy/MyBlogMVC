@@ -14,42 +14,54 @@
 
 
 <div class="container py-5">
-    <form method="post">
-        <!-- Id -->
-        <div class="mb-3">
-            <label class="form-label">Id</label>
-            <!-- asp-for Good send data to the Model and View the Data comming back from the DB ->
-              <!-- readonly to prevent user from changing the value -->
-            <input type="text" id="id" class="form-control" asp-for="Id" readonly/>
-        </div>
-
-        <!-- Name -->
-        <div class="mb-3">
-            <label class="form-label">Name (Use dashline between words like Potato-Peel)</label>
-            <input type="text" id="id" class="form-control" asp-for="Name"/>
-        </div>
-
-        <!-- Display Name -->
-        <div class="mb-3">
-            <label class="form-label">Display Name</label>
-            <input type="text" id="id" class="form-control" asp-for="DisplayName"/>
-        </div>
-
-
-        <!-- Update & Delete-->
-        <div class="mb-3">
-            <div class="d-flex">
-                <button type="submit" class="btn btn-dark">Update</button>
-                
-                <button type="submit" class="btn btn-dark ms-2"
-                        asap-area=""
-                        asap-controller="AdminTags"
-                        asp-action="Delete">
-                    Delete
-                </button>
+    <!-- Checking in the View. If any wrong Id Passed through-->
+    @if (Model != null)
+    {
+        <form method="post">
+            <!-- Id -->
+            <div class="mb-3">
+                <label class="form-label">Id</label>
+                <!-- asp-for Good send data to the Model and View the Data comming back from the DB ->
+                  <!-- readonly to prevent user from changing the value -->
+                <input type="text" id="id" class="form-control" asp-for="Id" readonly />
             </div>
-            
-        </div>
 
-    </form>
+            <!-- Name -->
+            <div class="mb-3">
+                <label class="form-label">Name (Use dashline between words like Potato-Peel)</label>
+                <input type="text" id="id" class="form-control" asp-for="Name" />
+            </div>
+
+            <!-- Display Name -->
+            <div class="mb-3">
+                <label class="form-label">Display Name</label>
+                <input type="text" id="id" class="form-control" asp-for="DisplayName" />
+            </div>
+
+
+            <!-- Update & Delete-->
+            <div class="mb-3">
+                <div class="d-flex">
+                    <button type="submit" class="btn btn-dark" asap-controller="AdminTags"
+                            asp-action="Edit">
+                        Update
+                    </button>
+
+                    <button type="submit" class="btn btn-dark ms-2"
+                            asap-area=""
+                            asap-controller="AdminTags"
+                            asp-action="Delete">
+                        Delete
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+    }
+    else
+    {
+        <p>Tag not Found</p>
+    }
+
 </div>

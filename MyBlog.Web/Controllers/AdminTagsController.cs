@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using MyBlog.Web.Data;
 using MyBlog.Web.Models.Domain;
@@ -30,7 +31,7 @@ namespace MyBlog.Web.Controllers
         // POST is used to send data to a server to create/update a resource.
         [HttpPost]
         //[ActionName("Add")] // if they're not the same Cs still recognized which Add to use (context: compare Add above and Add below)
-        public IActionResult AddTag(AddTagRequest addTagRequest)
+        public async Task<IActionResult> AddTag(AddTagRequest addTagRequest)
         {
             // Mapping AddTagRequest to Tag to domain model
             var tag = new Tag
@@ -39,10 +40,10 @@ namespace MyBlog.Web.Controllers
                 DisplayName = addTagRequest.DisplayName,
             };
 
-            // get data from tag
-            bloggieDbContext.Tags.Add(tag);
-            // save changes
-            bloggieDbContext.SaveChanges();
+            // use await to make it complete async
+            // do all these function async
+            await bloggieDbContext.Tags.AddAsync(tag);
+            await bloggieDbContext.SaveChangesAsync();
 
             return View("Add");
         }
@@ -72,27 +73,25 @@ namespace MyBlog.Web.Controllers
         [HttpGet]
         // use to redirect user to the List view 
         [ActionName("List")]
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
             // get data from bloggieDbContext
-            var tags = bloggieDbContext.Tags.ToList();
+            var tags = await bloggieDbContext.Tags.ToListAsync();
 
             // return data to view
             return View(tags);
         }
 
         [HttpGet]
-        // Action Name is crucial bc it show What .cshtml file to render
-        [ActionName("Edit")]
         // read Tag by id
-        public IActionResult Edit(Guid id)
+        public async Task<IActionResult> Edit(Guid id)
         {
             // 1st method 
             //var tag = bloggieDbContext.Tags.Find(id);
             
             // 2nd  method
-            // Find tag by id and return the 1st one it found
-            var tag = bloggieDbContext.Tags.FirstOrDefault(x => x.Id == id);  
+            // Use FirstOrDefault to Find tag by id and return the 1st one it found
+            var tag = await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);  
 
             // Return EditTagRequest Model to the view if tag is not null
             if (tag != null)
@@ -110,15 +109,12 @@ namespace MyBlog.Web.Controllers
             return View(null);
         }
 
+        // Method Overloading allow 2 Edit Actions not get Conficted.
         [HttpPost]
-        // Action Name is crucial bc it show What .cshtml file to render
-        [ActionName("Edit")]
-        // notice: Tag.id != existingTag.id bc Tag.id is from EditTagRequest and existingTag.id is from bloggieDbContext
-        // Edit - replace the existing tag with new tag data, then save changes
-        public IActionResult Edit(EditTagRequest editTagRequest)
+        // Edit - replace the existing tag with new tag data
+        public async Task<IActionResult> Edit(EditTagRequest editTagRequest)
         {
-            
-              
+            // Notice: tag.id != existingTag.id 
             // tag object - get tag from editTagRequest (data from Edit.cshtml)
             var tag = new Tag
             {
@@ -128,7 +124,7 @@ namespace MyBlog.Web.Controllers
             };
 
             // existingTag object - get existing tag from bloggieDbContext (Data from Database) 
-            var existingTag = bloggieDbContext.Tags.Find(tag.Id);
+            var existingTag = await bloggieDbContext.Tags.FindAsync(tag.Id);
             
             // replace existing tag with new tag datas
             if (existingTag != null)
@@ -137,7 +133,7 @@ namespace MyBlog.Web.Controllers
                 existingTag.DisplayName = tag.DisplayName;
 
                 // save changes
-                bloggieDbContext.SaveChanges();
+               await bloggieDbContext.SaveChangesAsync();
 
                 // show success notification
                 TempData["SuccessMessage"] = "Tag updated successfully!";
@@ -150,18 +146,18 @@ namespace MyBlog.Web.Controllers
         }
 
         [HttpPost]
-        [ActionName("Delete")]
         // Delete - remove tag from bloggieDbContext
-        public IActionResult Delete(Guid Id)
+        public async Task<IActionResult> Delete(EditTagRequest editTagRequest)
         {
             // get tag by id
-            var tag = bloggieDbContext.Tags.Find(Id);
+            // use find for existing tag id
+            var tag = await bloggieDbContext.Tags.FindAsync(editTagRequest.Id);
 
             // remove tag from bloggieDbContext
             if (tag != null)
             {
                 bloggieDbContext.Tags.Remove(tag);
-                bloggieDbContext.SaveChanges();
+                await bloggieDbContext.SaveChangesAsync();
 
                 // show success notification
                 TempData["SuccessMessage"] = "Tag deleted successfully!";
@@ -170,7 +166,7 @@ namespace MyBlog.Web.Controllers
 
             // show fail notification
             TempData["ErrorMessage"] = "Failed to delete tag. Please try again."; 
-            return RedirectToAction("Edit", new {id = Id});
+            return RedirectToAction("Edit", new {id = editTagRequest.id});
         }
     }
 }
