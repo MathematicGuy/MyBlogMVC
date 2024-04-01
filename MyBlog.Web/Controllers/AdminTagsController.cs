@@ -1,18 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using MyBlog.Web.Data;
 using MyBlog.Web.Models.Domain;
 using MyBlog.Web.Models.ViewModels;
-using MyBlog.Web.Responsitory;
+using MyBlog.Web.Repository;
 
 namespace MyBlog.Web.Controllers
 {
     public class AdminTagsController : Controller
     {
-        private readonly ITagResponsitory tagResponsitory;
+        private readonly ITagRepository tagResponsitory;
 
-        public AdminTagsController(ITagResponsitory tagResponsitory)
+        public AdminTagsController(ITagRepository tagResponsitory)
         {
             this.tagResponsitory = tagResponsitory;
         }

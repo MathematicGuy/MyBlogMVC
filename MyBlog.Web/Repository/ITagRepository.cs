@@ -1,9 +1,9 @@
 ﻿using MyBlog.Web.Models.Domain;
 
-namespace MyBlog.Web.Responsitory
+namespace MyBlog.Web.Repository
 {
     // interface for Tag. Just include the Definition for Functionality
-    public interface ITagResponsitory
+    public interface ITagRepository
     {
         // DB always know about the DOMAIN MODEL
         Task<IEnumerable<Tag>> GetAllAsync();

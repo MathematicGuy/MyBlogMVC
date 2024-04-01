@@ -16,7 +16,8 @@ namespace MyBlog.Web.Models.ViewModels
         
         // Declare a List Item to hold Tags (Selected tags from Controller store in Tags List Item)
         public IEnumerable<SelectListItem> Tags { get; set; }
-        // Selected Tag save here
-        public string SelectedTag { get; set; }
+        // Collect Tags
+        public string[] SelectedTags { get; set; } = Array.Empty<string>();
+
     }   
 }

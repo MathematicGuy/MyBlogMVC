@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Web.Data;
-using MyBlog.Web.Responsitory;
+using MyBlog.Web.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,8 +13,10 @@ builder.Services.AddDbContext<BloggieDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BloggieDbConnectionString")));
 
 
-// Inject ITagInterface & TagResponsitory
-builder.Services.AddScoped<ITagResponsitory, TagResponsitory>();
+// Inject BloggieDbContext to ITagInterface & TagResponsitory
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+// Inject BloggieDbContext to IBlogPostInterface & BlogPostResponsitory
+builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 
 
 var app = builder.Build();

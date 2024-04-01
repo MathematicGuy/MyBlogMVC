@@ -3,20 +3,20 @@ using MyBlog.Web.Data;
 using MyBlog.Web.Models.Domain;
 using MyBlog.Web.Models.ViewModels;
 
-namespace MyBlog.Web.Responsitory
+namespace MyBlog.Web.Repository
 {
     // inherit ITagResponsitory function
-    public class TagResponsitory : ITagResponsitory
+    public class TagRepository : ITagRepository
     {
         // Talk to the Db
         private readonly BloggieDbContext bloggieDbContext;
 
         // import BloggieDbContext from Program file so we can access the Db
-        public TagResponsitory(BloggieDbContext bloggieDbContext)
+        public TagRepository(BloggieDbContext bloggieDbContext)
         {
             this.bloggieDbContext = bloggieDbContext;
         }
-        
+
         public async Task<Tag> AddAsync(Tag tag)
         {
             // Want to talk to the Db
@@ -34,10 +34,10 @@ namespace MyBlog.Web.Responsitory
 
         public async Task<Tag> GetByIdAsync(Guid id)
         {
-            if (id != null)
-            {
+            //if (id != null)
+            //{
 
-            }
+            //}
             return await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -63,8 +63,8 @@ namespace MyBlog.Web.Responsitory
         public async Task<Tag?> DeleteAsync(Guid id)
         {
             var existingTag = await bloggieDbContext.Tags.FindAsync(id);
-            
-            if (existingTag != null)    
+
+            if (existingTag != null)
             {
                 bloggieDbContext.Tags.Remove(existingTag);
                 await bloggieDbContext.SaveChangesAsync();
