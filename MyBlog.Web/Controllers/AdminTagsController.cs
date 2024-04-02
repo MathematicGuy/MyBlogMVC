@@ -135,8 +135,7 @@ namespace MyBlog.Web.Controllers
         // Delete - remove tag from bloggieDbContext
         public async Task<IActionResult> Delete(EditTagRequest editTagRequest)
         {
-            // get tag by id
-            // use find for existing tag id
+            // use find for get existing tag id
             var deletedTag = await tagResponsitory.DeleteAsync(editTagRequest.Id);
             if (deletedTag != null)
             {

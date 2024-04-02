@@ -40,6 +40,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     // controler = 'AdminTags' (AdminTagsController) and action = 'List' (List method in AdminTagsController)
-    pattern: "{controller=AdminTags}/{action=List}/{id?}");
+    pattern: "{controller=AdminBlogPosts}/{action=List}/{id?}");
 
 app.Run();

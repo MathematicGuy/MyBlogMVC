@@ -1,0 +1,58 @@
+﻿<!-- select Model as a List of Blog Post -->
+@model List<MyBlog.Web.Models.Domain.BlogPost>
+@{}
+
+
+<div class="bg-secondary bg-opacity-10 py-2">
+    <div class="container">
+        <h1>All Blog Post - Admin Function</h1>      
+    </div>
+</div>
+
+
+<div class="container py-5">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table">
+            <thread>
+                <tr>
+                    <th>Id</th>
+                    <th>Heading</th>
+                    <th>Tags</th>
+                    <th>Action</th>
+                </tr>
+            </thread>
+
+            <tbody>
+                @foreach (var blogPost in Model)
+                {
+                    <tr>
+                        <td>@blogPost.Id</td>
+                        <td>@blogPost.Heading</td>
+                        <!-- Display Tags -->
+                        <td>
+                            <div class="d-flex">
+                                @foreach (var tag in blogPost.Tags)
+                                {
+                                    <span class="badge bg-primary me-1 p-2">@tag.Name</span>
+                                }
+                            </div>
+                        </td>
+                        <!-- Edit Blog by Id -->
+                        <td>
+                            <a asp-area=""
+                               asp-controller="AdminBlogPosts"
+                               asp-action="Edit"
+                               asp-route-id="@blogPost.Id">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    }
+    else
+    {
+        <p>No Blog Found !</p>
+    }
+</div>

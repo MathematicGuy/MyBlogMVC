@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyBlog.Web.styles.css" asp-append-version="true" />
+
+    <link href='https://cdn.jsdelivr.net/npm/froala-editor@4.0.10/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
+    <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@4.0.10/js/froala_editor.pkgd.min.js'></script>
 </head>
 <body>
     <header>
@@ -57,6 +60,15 @@
                                        asp-controller="AdminBlogPosts"
                                        asp-action="Add">Add Blog Post</a>
                                 </li>
+
+                                <li>
+                                    <!-- AdminTags/List -->
+                                    <a class="dropdown-item"
+                                       asp-area=""
+                                       asp-controller="AdminBlogPosts"
+                                       asp-action="List">Show All Blog Post</a>
+                                </li>
+
                             </ul>
                         </li>
                     </ul>
@@ -64,24 +76,26 @@
                 </div> 
                 <!-- End of Header Component 1 -->
 
-                <!-- End of Header Container -->
-            </div>
-        </nav>
-    </header>
-    <div class="">
-        <main role="main" class="">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - MyBlog.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <!-- End of Header Container -->
+                </div>
+            </nav>
+        </header>
+    
+        <div class="">
+            <main role="main" class="">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2024 - MyBlog.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
 </html>

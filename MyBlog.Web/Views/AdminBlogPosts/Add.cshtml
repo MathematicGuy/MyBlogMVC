@@ -42,7 +42,7 @@
             <label class="form-label">
                 FeatureImageIRL
             </label>
-            <input type="text" class="form-control" id="featureImageIRL" asp-for="FeatureImageIRL" />
+            <input type="text" class="form-control" id="featureImageIRL" asp-for="FeatureImageUrl" />
         </div>
 
         <div class="mb-3">
@@ -73,6 +73,7 @@
             </label>
         </div>
 
+
         <!-- Display Tags -->
         <div class="mb-3">            
             <label class="form-label">Tags</label>   
@@ -88,3 +89,9 @@
         </div>
     </form>
 </div>
+
+@section Scripts {
+    <script>
+        var editor = new FroalaEditor('#content');
+    </script>
+}

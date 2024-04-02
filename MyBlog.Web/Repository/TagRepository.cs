@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Text.Editor.Commanding.Commands;
 using MyBlog.Web.Data;
 using MyBlog.Web.Models.Domain;
 using MyBlog.Web.Models.ViewModels;
@@ -34,19 +35,18 @@ namespace MyBlog.Web.Repository
 
         public async Task<Tag> GetByIdAsync(Guid id)
         {
-            //if (id != null)
-            //{
-
-            //}
-            return await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            if (id != null) { 
+                return await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            };
+            return null;
         }
 
         public async Task<Tag?> UpdateAsync(Tag tag)
         {
-            //var tag = await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
+            // var tag = await bloggieDbContext.Tags.FirstOrDefaultAsync(x => x.Id == id);
 
             var existingTag = await bloggieDbContext.Tags.FindAsync(tag.Id);
-
+             
             if (existingTag != null)
             {
                 existingTag.Name = tag.Name;
