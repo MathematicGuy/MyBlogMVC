@@ -1,0 +1,46 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+
+body {
+    background-color: #F8F9FA; /* Cream white background */
+}
+
+.blog-post {
+    background-color: #fff; /* White background for cards */
+    border: 1px solid #eee; /* Subtle border */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Minimal shadow  */
+}
+
+.blog-post-title {
+    color: #333; /* Faded black for title */
+}
+
+.blog-post-meta, .blog-post-content p {
+    color: #555; /* Slightly lighter faded black */
+}
+
+.badge {
+    background-color: #eee; /* Light grey for badges */
+    color: #333;
+}
+
+.blog-post-title {
+    margin-bottom: 2rem;
+}

@@ -1,0 +1,36 @@
+﻿@model MyBlog.Web.Models.Domain.BlogPost
+@{
+    // change Page title to BlogPost Heading
+    ViewData["Title"] = Model.PageTitle;
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-6">
+            @if (Model != null){
+               <h1 class="mb-3">@Model.Heading</h1>
+                <div class="d-flex justify-content-between">
+                    <span class="text-secondary">@Model.Author</span>
+                    <span class="text-secondary">@Model.PublishedDate.ToShortDateString()</span>
+                </div>
+
+                <div class="mb-3 d-flex">
+                    @foreach( var tag in Model.Tags)
+                    {
+                        <a href="/blog/tag/@tag.Name" class="badge bg-secondary text-decoration-none me-1">@tag.Name</a>
+                    }
+                </div>
+                <img src="@Model.FeaturedImageUrl" class="d-block img-fluid mb-3"/>
+
+                // Parsing Content to Html form and show it in the view
+                <div class="mb-3">
+                    @Html.Raw(@Model.Content);  
+                </div>
+            }
+            else
+            {
+                <p> Blog post not found</p>
+            }
+        </div>
+    </div>
+</div>

@@ -5,7 +5,7 @@ using MyBlog.Web.Repository;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews(); // allow to use Contorller with Views
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation(); // allow to use Contorller with Views
 
 // Inject DbConext => (telling which server we're using)
 builder.Services.AddDbContext<BloggieDbContext>(options =>
@@ -42,6 +42,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     // controler = 'AdminTags' (AdminTagsController) and action = 'List' (List method in AdminTagsController)
-    pattern: "{controller=AdminBlogPosts}/{action=List}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

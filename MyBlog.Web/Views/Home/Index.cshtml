@@ -1,8 +1,73 @@
-﻿@{
+﻿<!-- select Model as a List of Blog Post -->
+@model List<MyBlog.Web.Models.Domain.BlogPost>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+
+
+<div class="container my-3">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 p-3 my-2">
+            <!-- Blog Name and Title -->
+            <h1 action="display-5 fw-bold lh-1">
+                My Blog - SukmaBlog
+            </h1>
+            <p class="lead">
+                Freestyles Blogpost. Everything from Constroversal Topic
+                to Lowkey Opinion and something A Slice of Life
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- BlogPosts Container -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            @if (Model != null && Model.Any())
+            {
+                foreach (var blogPost in Model)
+                {
+                    <article class="blog-post mb-5 card">
+                        <div class="card-body">
+                            <header class="blog-post-header g-3">
+                                <a class="blog-post-title display-6 fw-bold" style="text-decoration:none; color: grey;" 
+                                    asp-area=""
+                                    asp-controller="Blogs"
+                                    asp-action="Index"
+                                    asp-route-urlHandle="@blogPost.UrlHandle">
+                                    @blogPost.Heading
+                                </a>
+                                 
+                                <!--- &nbsp mean space -->
+                                <div class="blog-post-meta text-muted d-flex mt-3">
+                                    <span>@blogPost.PublishedDate.ToString("MMMM dd, yyyy")&nbsp;</span>
+                                    <span>by&nbsp;@blogPost.Author</span>
+                                </div>
+                            </header>
+
+                            <div class="blog-post-content mt-4">
+                                <p class="lead">@blogPost.ShortDescription</p>
+                            </div>
+
+                            <footer class="blog-post-footer mt-4">
+                                @if (blogPost.Tags != null && blogPost.Tags.Any())
+                                {
+                                    <div class="blog-post-tags">
+                                        @foreach (var tag in blogPost.Tags)
+                                        {
+                                            <a href="/blog/tag/@tag.Name" class="badge bg-secondary text-decoration-none">@tag.Name</a>
+                                        }
+                                    </div>
+                                }
+                            </footer>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+    </div>
 </div>

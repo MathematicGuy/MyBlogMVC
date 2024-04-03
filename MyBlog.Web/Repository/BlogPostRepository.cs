@@ -53,6 +53,13 @@ namespace MyBlog.Web.Repository
             return await bloggieDbContext.BlogPosts.Include(x => x.Tags).FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<BlogPost?> GetByUrlHandleAsync(string urlHandle)
+        {
+            return await bloggieDbContext.BlogPosts.Include(x => x.Tags)
+                .FirstOrDefaultAsync(x => x.UrlHandle == urlHandle);
+
+        }
+
         public async Task<BlogPost> UpdateAsync(BlogPost blogPost)
         {
             var existingBlog = await bloggieDbContext.BlogPosts.Include(x => x.Tags)
@@ -66,7 +73,7 @@ namespace MyBlog.Web.Repository
                 existingBlog.Content = blogPost.Content;
                 existingBlog.ShortDescription = blogPost.ShortDescription;
                 existingBlog.Author = blogPost.Author;
-                existingBlog.FeatureImageUrl = blogPost.FeatureImageUrl;
+                existingBlog.FeaturedImageUrl = blogPost.FeaturedImageUrl;
                 existingBlog.UrlHandle = blogPost.UrlHandle;
                 existingBlog.Visible = blogPost.Visible;
                 existingBlog.PublishedDate = blogPost.PublishedDate;

@@ -50,7 +50,7 @@
             <label class="form-label">
                 FeatureImageURL
             </label>
-            <input type="text" class="form-control" id="featuredImageURL" asp-for="FeatureImageUrl" />
+            <input type="text" class="form-control" id="featuredImageURL" asp-for="FeaturedImageUrl" />
         </div>
 
         <div class="mb-3">
@@ -117,8 +117,12 @@
 -->
 @section Scripts {
     <script>
+
         // use Froala TextEditor format for #content element
-        var editor = new FroalaEditor('#content');
+        var editor = new FroalaEditor('#content', {
+            imageUploadURL: '/api/images',
+        });
+            
         // get input image data in featuredUploadElement
         const featuredUploadElement = document.getElementById('featuredImageUpload');
         // save image Url in featuredImageUrlElement
@@ -155,10 +159,9 @@
                     console.log(result);
                 });
         }
-
+        
         // When the value of the input changes (i.e., the user selects a file)
         // The uploadFeaturedImage function is automatically executed.
         featuredUploadElement.addEventListener('change', uploadFeaturedImage);
     </script>
 }
-
