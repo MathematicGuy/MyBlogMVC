@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> signInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -21,7 +24,7 @@
                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <span class="navbar-toggler-icon"></span>   
                 </button>
 
                 <!-- Header Component 1 -->
@@ -31,70 +34,92 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Admin
-                            </a>
+                        <!-- Admin Drop Down -->
+                        <!-- Only Allow Admin to see This-->
+                        @if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin
+                                </a>
 
-                            <ul class="dropdown-menu">
-                                
-                                <li>
-                                    <!-- AdminTags/Add -->
-                                    <a class="dropdown-item" 
-                                    asp-area="" 
-                                    asp-controller="AdminTags"
-                                    asp-action="Add">Add Tag</a>
-                                </li>
+                                <ul class="dropdown-menu">
 
-                                <li>
-                                    <!-- AdminTags/List -->
-                                    <a class="dropdown-item"
-                                       asp-area=""
-                                       asp-controller="AdminTags"
-                                       asp-action="List">Show All Tags</a>
-                                </li>
+                                    <li>
+                                        <!-- AdminTags/Add -->
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="AdminTags"
+                                           asp-action="Add">Add Tag</a>
+                                    </li>
 
-                                <li>
-                                    <!-- AdminTags/List -->
-                                    <a class="dropdown-item"
-                                       asp-area=""
-                                       asp-controller="AdminBlogPosts"
-                                       asp-action="Add">Add Blog Post</a>
-                                </li>
+                                    <li>
+                                        <!-- AdminTags/List -->
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="AdminTags"
+                                           asp-action="List">Show All Tags</a>
+                                    </li>
 
-                                <li>
-                                    <!-- AdminTags/List -->
-                                    <a class="dropdown-item"
-                                       asp-area=""
-                                       asp-controller="AdminBlogPosts"
-                                       asp-action="List">Show All Blog Post</a>
-                                </li>
+                                    <li>
+                                        <!-- AdminTags/List -->
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="AdminBlogPosts"
+                                           asp-action="Add">Add Blog Post</a>
+                                    </li>
 
-                            </ul>
-                        </li>
+                                    <li>
+                                        <!-- AdminTags/List -->
+                                        <a class="dropdown-item"
+                                           asp-area=""
+                                           asp-controller="AdminBlogPosts"
+                                           asp-action="List">Show All Blog Post</a>
+                                    </li>
+
+                                </ul>
+                            </li>
+                        }
+                        <!-- End of Admin Drop Down -->
+
                     </ul>
                 </div> 
 
                 <!-- End of Header Component -->
-                <div class="d-flex">
-                    <a class="btn me-3 bg-light text-dark"
-                        asp-area=""
-                        asp-controller="Account"
-                        asp-action="Register">
-                        Register
-                    </a>
-                </div>
+                <div class="d-flex align-item-center">
+                    <!-- Check User signed In or Not -->
+                    @if (signInManager.IsSignedIn(User))
+                    {
+                        // Display the User Name if Logged In
+                        <div class="btn me-3 text-light">
+                            @User?.Identity?.Name 
+                        </div>
 
-                <div class="d-flex">
-                    <a class="btn me-3 text-light"
-                        asp-area=""
-                        asp-controller="Account"
-                        asp-action="Login">
-                        Login
-                    </a>
+                        <a class="btn me-3 text-light"
+                           asp-area=""
+                           asp-controller="Account"
+                           asp-action="Logout">
+                           Logout
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn me-3 bg-light text-dark"
+                            asp-area=""
+                            asp-controller="Account"
+                            asp-action="Register">
+                            Register
+                        </a>
+
+                        <a class="btn me-3 text-light"
+                            asp-area=""
+                            asp-controller="Account"
+                            asp-action="Login">
+                            Login
+                        </a>                        
+                    }
                 </div>
                 <!-- End of Header Container -->
-                </div>
             </nav>
         </header>
     

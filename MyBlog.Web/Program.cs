@@ -18,11 +18,26 @@ builder.Services.AddDbContext<AuthDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("BloggieAuthDbConnectionString")));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<AuthDbContext>();
+    .AddEntityFrameworkStores<AuthDbContext>(); 
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Default settings password requirements
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6; // at least 6 chars
+    options.Password.RequiredUniqueChars = 1; 
+});
+
+
+
+
 
 // Inject BloggieDbContext to ITagInterface & TagResponsitory
 builder.Services.AddScoped<ITagRepository, TagRepository>();
-// Inject BloggieDbContext to IBlogPostInterface & BlogPostResponsitory
+// Inject BloggieDbContext to IBlo  gPostInterface & BlogPostResponsitory
 builder.Services.AddScoped<IBlogPostRepository, BlogPostRepository>();
 // handle dependency injection
 builder.Services.AddScoped<IImageRepository, CloudinaryImageRepository>();
