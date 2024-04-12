@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace MyBlog.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+   [Authorize(Roles = "Admin")]
     public class AdminBlogPostsController : Controller
     {
         private readonly ITagRepository tagRepository;
@@ -216,4 +216,4 @@ namespace MyBlog.Web.Controllers
             return RedirectToAction("List", new { id = editBlogPostRequest.Id });
         }
     }
-}
+} 
